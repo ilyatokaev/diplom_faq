@@ -1,0 +1,71 @@
+<html>
+
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        
+        <div class="container">
+            
+            <div class="row" id="top-header">
+                <div class="col-md-2">
+                    <a class="btn btn-default" href="#" role="button">Добавить вопрос</a>
+                </div>
+                <div class="col-md-8 mainHead"><h4>Вопросы-ответы:</h4></div>
+                <div class="col-md-2">
+                    <a class="btn btn-sm" href="router.php?params=show_login_form" role="button">Вход для администратора</a>
+                </div>
+            </div>
+            
+            <div class="row" id="top-header">
+                <div class="col-md-12 mainHead">На данный момент готово:</div>
+                <div class="col-md-12 mainHead">1) Полная струтура базы по основному заданию диплома</div>
+                <div class="col-md-12 mainHead">2) Авторизация админа (включая шаблон)</div>
+                <div class="col-md-12 mainHead">3) Модель данных по пользователям (класс User)</div>
+                <div class="col-md-12 mainHead">4) Главный шаблон (текущий)</div>
+                <div class="col-md-12 mainHead"></div>
+
+            </div>
+
+            
+            <div class="row" id="content-header">
+                <div class="col-md-2">Дата</div>
+                <div class="col-md-2">Автор</div>
+                <div class="col-md-8">Тема/Текст</div>
+            </div>
+
+            {% for question in data %}
+                <div class="question">
+                    
+                    <div class="row row-question" id="content">
+                        <div class="col-md-2">{{question.date}}</div>
+                        <div class="col-md-2">{{question.author}}</div>
+                        <div class="col-md-2">{{question.category}}:</div>
+                        <div class="col-md-6">{{question.text}}</div>
+                    </div>
+                    
+                    {% for answer in question['answers'] %}
+                        <div class="row row-answer" id="content">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-1">{{answer.date}}</div>
+                            <div class="col-md-2">{{answer.author}}</div>
+                            <div class="col-md-8">{{answer.text}}</div>
+                        </div>
+                    {% endfor%}
+                    
+                </div>
+            {% endfor%}
+                
+
+          
+        
+        </div>
+        
+
+    </body>
+</html>

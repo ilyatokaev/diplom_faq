@@ -1,0 +1,27 @@
+.loginForm{
+    max-width: 400px;
+}
+#header{
+    background: #ccc;
+}
+#top-header{
+    background: #ccc;
+}
+#content-header{
+    background: #999;
+    
+    margin-top: 15px;
+}
+.row{
+    padding: 5px;
+}
+.mainHead{
+    align-content: center;
+}
+
+.row-question{
+    background: #a6e1ec;
+}
+.row-answer{
+    background: #bce8f1;
+}
