@@ -26,7 +26,11 @@ for ($i = 1; $i < 2; $i++){
               ];
 }
 
-echo $twig->render('qq_list.twig', array('data' => $data));
+//echo $twig->render('qq_list.twig', array('data' => $data));
 //echo $twig->render('login_failed.twig');
+//echo $twig->render('test.twig');
+$clientView = new ClientView("admin_desktop", "users");
+//$clientView->show("admin_desktop", "users");
+$clientView->show();
 ?>
 

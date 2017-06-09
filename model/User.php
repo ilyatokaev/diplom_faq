@@ -89,9 +89,9 @@ class User
      *                         TRUE - если пользователь удачно создан
      *                         FALSE - в случае, если создать не удалось
      */
-    public function create($login, $password, $desription = NULL)
+    public function create($login, $password, $description = NULL)
     {
-            $sql = "INSERT INTO users (login, password_hash, description) VALUES(:login, :password_hash, :description";
+            $sql = "INSERT INTO users (login, password_hash, description) VALUES(:login, :password_hash, :description)";
 
             if (!$st = $this->db->prepare($sql)){
                 die("Не удалось подготовить запрос на создание пользователя!");
@@ -100,7 +100,7 @@ class User
             $st->bindParam(":login", $login, PDO::PARAM_STR);
             $st->bindParam(":password_hash", $this->password_hash($login, $password), PDO::PARAM_STR);
             $st->bindParam(":description", $description, PDO::PARAM_STR);
-            
+            //var_dump($st->queryString);
             return $st->execute();
 
     }
@@ -168,24 +168,26 @@ class User
     public function fullList()
     {
             $sql = "SELECT id, login, description FROM users";
+            $resultList = array();
+            $resultList['header'] = ['ID', 'Login', 'Описание', 'Роли'];
 
             if (!$st = $this->db->prepare($sql)){
                 die("Не удалось подготовить запрос на получение списка пользователей!");
             }
             
-            $st->bindParam(":id", $id, PDO::PARAM_INT);
-            $st->bindParam(":description", $description, PDO::PARAM_STR);
+            /*$st->bindParam(":id", $id, PDO::PARAM_INT);
+            $st->bindParam(":description", $description, PDO::PARAM_STR);*/
             
             if (!$st->execute()){
                 die("Не удалось подготовить запрос на получение списка пользователей!");
             }
             
-            $resultList = array();
             
             while ($row = $st->fetch(PDO::FETCH_ASSOC)){
                 $row['roles'] = $this->getRolesString($row['id']);
-                $resultList[] = $row;
+                $resultList['data'][] = $row;
             }
+
             return $resultList;
     }
     
@@ -242,7 +244,7 @@ class User
      */
     public function getRoles($id)
     {
-        $sql = "SELECT r.id r.code 
+        $sql = "SELECT r.id, r.code 
                 FROM roles r
                     INNER JOIN (
                                 SELECT id_role 
@@ -257,6 +259,7 @@ class User
 
         $st->bindParam(":id_user", $id, PDO::PARAM_INT);
         
+
         if (!$st->execute()){
             die("Не удалось выполнить запрос на получение ролей пользователя!");
         }
