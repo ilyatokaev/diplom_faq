@@ -24,7 +24,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li><a href="router.php?params=show_admin_desktop:qq_categories">Категории вопросов</a></li>
+                  <li><a href="router.php?params=show_admin_desktop:qq_categories">Темы</a></li>
                   <li><a href="router.php?params=show_admin_desktop:users">Пользователи</a></li>
               </ul>
             </div>
@@ -54,17 +54,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                        {%for row in table['data']%}
+                        {%for row in table['body']%}
                             <tr>
                                 <td>
-                                    <a href="{{row.hrefChangePassword}}">Изменить пароль</a>
-                                    /
-                                    <a href="{{row.hrefUserDel}}">Удалить пользователя</a>
+                                    {%for action in row['actions']%}
+                                        <a href="{{action.href}}">{{action.title}}</a>
+                                        /
+                                    {%endfor%}
                                 </td>
-                                {%for columnData in row %}
-                                    {%if loop.index0 > 1%}
-                                        <td>{{columnData}}</td>
-                                    {%endif%}
+                                {%for columnData in row['data'] %}
+                                    <td>{{columnData}}</td>
                                 {%endfor%}
                             </tr>
                         {%endfor%}

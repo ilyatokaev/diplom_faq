@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 require_once 'start_init.php';
 
-$data = array();
+/*$data = array();
 for ($i = 1; $i < 2; $i++){
     $data[] = [
                 "date" => date("d.m.Y  H.m.s")
@@ -24,13 +24,11 @@ for ($i = 1; $i < 2; $i++){
                                      ]
                                 ]
               ];
-}
+}*/
 
 //echo $twig->render('qq_list.twig', array('data' => $data));
 //echo $twig->render('login_failed.twig');
 //echo $twig->render('test.twig');
-$clientView = new ClientView("admin_desktop", "users");
+$clientView = new ClientView("admin_desktop", ["users"]);
 //$clientView->show("admin_desktop", "users");
 $clientView->show();
-?>
-

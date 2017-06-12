@@ -8,8 +8,13 @@ session_start();
 require_once 'vendor/autoload.php';
 require_once './model/User.php';
 require_once './model/Category.php';
+require_once './model/Question.php';
 require_once './Classes/ClientView.php';
+require_once './Classes/Cfg.php';
 require_once './templates/admin_desktop.php';
+require_once './templates/user_password_change_form.php';
+require_once './templates/user_del_form.php';
+require_once './templates/category_del_form.php';
 
 $loader = new Twig_Loader_Filesystem('./templates');
 

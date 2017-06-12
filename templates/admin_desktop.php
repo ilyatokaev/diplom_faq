@@ -15,30 +15,27 @@ class admin_desktop
 {
     private $templateName = "admin_desktop";
 
-    function GenArray($mode = NULL)
+    //function GenArray($mode = NULL, $params = NULL)
+    function GenArray($params = [])
     {
+        
         if ($this->templateName == "admin_desktop"){
             
-            if (!isset($mode)){
+            if (!isset($params[1])){
                 $mode = "users";
+            } else {
+                $mode = $params[1];
             }
             
             if ($mode === "qq_categories"){
-                $result = [
-                    'title' => "Список тем"
-                    , 'sidebar' => [
-                        "Создать новую категорию"
-                    ]
-                    , 'data' => Category::fullList()
-                ];
+                $result = $this->genArrayCategories();
                 
             }elseif ($mode === "users"){
-                
                 $result = $this->genArrayUsers();
                 
-                //$result['table']['data'] = Preporator::addHrefColumn($result['table']['data']
-                  //      , "router.php?params=show_user_edit_form:", "id", "изменить");
-                
+            }elseif ($mode === "qq"){
+                $currentCategoryId = $params[2];
+                $result = $this->genArrayQQ($currentCategoryId);
             }
         }
         return $result;
@@ -54,30 +51,113 @@ class admin_desktop
                             [
                                 'itemText' => "Создать",
                                 'itemHref' => "router.php?params=show_user_create_form"
-                            ],
-                            [
-                                'itemText' => "Отчеты",
-                                'itemHref' => "#"
                             ]
             ],
             'table' => $user->fullList(),
         ];
 
-        $array = $result['table']['data'];
-        
-        $result['table']['data'] = array();
-        
-        foreach ($array as $key => $row){
+        foreach ($result['table']['body'] as $key => $row){
+                $result['table']['body'][$key]['actions'] = [
+                                                              [
+                                                                'title' => "Изменить пароль",
+                                                                'href' => "router.php?params=show_user_password_change_form:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Удалить пользователя",
+                                                                'href' => "router.php?params=show_user_del_form:" . $row['data']['id']
+                                                              ]
+                                                            ];
 
-            $result['table']['data'][$key]['hrefPasswordChange'] = "router.php?params=show_user_password_change_form:" . $row['id'];
-            $result['table']['data'][$key]['hrefUserDel'] = "router.php?params=show_user_del_form:" . $row['id'];
-
-            foreach ($row as $fieldKey => $value){
-                $result['table']['data'][$key][$fieldKey] =  htmlspecialchars($value);
+            foreach ($row['data'] as $fieldKey => $value){
+                $result['table']['body'][$key]['data'][$fieldKey] =  htmlspecialchars($value);
             }
         }
         
         return $result;
+    }
+    
+    private function genArrayCategories()
+    {
+        $category = new Category();
+                
+        $result = [
+            'title' => "Темы",
+            'sidebar' => [
+                            [
+                                'itemText' => "Создать",
+                                'itemHref' => "router.php?params=show_category_create_form"
+                            ]
+            ],
+            'table' => $category->fullList(),
+        ];
+
+        foreach ($result['table']['body'] as $key => $row){
+                $result['table']['body'][$key]['actions'] = [
+                                                              [
+                                                                'title' => "Вопросоы",
+                                                                'href' => "router.php?params=show_admin_desktop:qq:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Удалить",
+                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                              ]
+                                                            ];
+
+            foreach ($row['data'] as $fieldKey => $value){
+                $result['table']['body'][$key]['data'][$fieldKey] =  htmlspecialchars($value);
+            }
+        }
+        
+        return $result;
+        
+        
+    }
+
+
+    private function genArrayQQ($categoryId)
+    {
+        
+        $question = new Question();
+        $question->setCategoryId($categoryId);
+        
+        $category = new Category();
+        $category->setId($categoryId);
+                
+        $result = [
+            'title' => "Вопросы по теме - " . $category->getCode(),
+            'sidebar' => [
+            ],
+            'table' => $question->listOneCategory(),
+        ];
+
+        foreach ($result['table']['body'] as $key => $row){
+                $result['table']['body'][$key]['actions'] = [
+                                                              [
+                                                                'title' => ($row['data']['id'] === 2) ? "Скрыть" : "Опубликовать",
+                                                                'href' => "router.php?params=show_question_status_invers_form:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Удалить",
+                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Редактировать вопрос",
+                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Ответы",
+                                                                'href' => "router.php?params=show_admin_desktop:answers:" . $row['data']['id']
+                                                              ]
+                                                            ];
+
+            foreach ($row['data'] as $fieldKey => $value){
+                $result['table']['body'][$key]['data'][$fieldKey] =  htmlspecialchars($value);
+            }
+        }
+        
+        return $result;
+        
+        
     }
     
 }
