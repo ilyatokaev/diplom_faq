@@ -17,6 +17,27 @@ class Category
     private $id;
     private $code;
 
+
+    
+    public function simpleFullList()
+    {
+        
+        $sql = "SELECT cat.id, cat.code FROM categories cat";
+
+        if (!$st = Cfg::getDB()->prepare($sql)){
+            die('Не удалось подготовить запрос получения упрощенного списка категорий!');
+        }
+        
+        if (!$st->execute()) {
+            die('Не удалось выполнить запрос получения упрощенного списка категорий!');
+        }
+        
+        $result = $st->fetchAll(PDO::FETCH_ASSOC);
+            
+        return $result;
+        
+    }
+
     
     public function fullList()
     {

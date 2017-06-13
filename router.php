@@ -39,7 +39,9 @@ if($signal === "show_login_form"){
         $_SESSION['userLogin'] = $user->getLogin();
         $_SESSION['userDescription'] = $user->getDescription();
         $_SESSION['roles'] = $user->getRolesString();
-        echo $twig->render('admin_desktop.twig');
+        //echo $twig->render('admin_desktop.twig');
+        $clientView = new ClientView("admin_desktop", ["", "users"]);
+        $clientView->show();
         
     } else {
 
@@ -173,4 +175,20 @@ elseif ($signal === "category_create_action"){
         $clientView = new ClientView("admin_desktop", "qq_categories");
         $clientView->show();
     }
+
+// Вызов формы созданиея вопроса
+}elseif ($signal === "show_question_create_form"){
+    $clientView = new ClientView("question_create_form");
+    $clientView->show();
+
+}elseif ($signal === "question_create_action"){
+    $question = new Question();
+    $question->setText($_POST['q_text']);
+    $question->setAuthor($_POST['author']);
+    $question->setEmail($_POST['email']);
+    $question->create();
+
+}elseif ($signal === "show_qq_list"){
+    $clientView = new ClientView("qq_list");
+    $clientView->show();
 }
