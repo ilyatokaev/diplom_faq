@@ -186,8 +186,14 @@ elseif ($signal === "category_create_action"){
     $question->setText($_POST['q_text']);
     $question->setAuthor($_POST['author']);
     $question->setEmail($_POST['email']);
-    $question->create();
+    
+    if ($question->create()){
+    echo 'Вопрос создан и будетопублекован после модерации и появления ответов.';
+    echo '<br><a href=router.php?params=show_qq_list>Вернуться к спску вопросов</a>';
+        
+    }
 
+           
 }elseif ($signal === "show_qq_list"){
     $clientView = new ClientView("qq_list");
     $clientView->show();

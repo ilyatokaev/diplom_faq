@@ -160,8 +160,8 @@ class Question
 
     public function create()
     {
-        $sql = "INSERT INTO qq (id_category, create_date, q_text, author, email, id_status)
-                    VALUES (:id_category, :create_date, :q_text, :author, :email, :id_status)
+        $sql = "INSERT INTO qq (id_category, create_date, q_text, author, email)
+                    VALUES (:id_category, :create_date, :q_text, :author, :email)
                ";
         
         $db = Cfg::getDB();
@@ -175,7 +175,7 @@ class Question
         $st->bindParam(':q_text', $_POST['q_text'], PDO::PARAM_STR);
         $st->bindParam(':author', $_POST['author'], PDO::PARAM_STR);
         $st->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-        $st->bindParam(':id_status', "2", PDO::PARAM_INT);
+
         
         if (!$st->execute()) {
             die('Не удалось выполнить запрос на создание вопроса!');
