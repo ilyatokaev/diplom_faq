@@ -72,7 +72,8 @@ class Question
     public function listOneCategory()
     {
     
-        $sql = "SELECT q.create_date
+        $sql = "SELECT q.id
+                    , q.create_date
                     , q.q_text
                     , q.author
                     , q.email
@@ -90,7 +91,7 @@ class Question
                 WHERE q.id_category = :id_category
                 ";
         
-        $result['header'] = ["Дата создания", "Вопрос", "Автор", "E-mail", "Ответов", "Статус"];
+        $result['header'] = ["id", "Дата создания", "Вопрос", "Автор", "E-mail", "Ответов", "Статус"];
         
         if (!$st = Cfg::getDB()->prepare($sql)){
             die('Не удалось подготовить запрос на получение списка вопросов!');
@@ -123,7 +124,7 @@ class Question
                         ON q.id_category = c.id
                 WHERE q.id IN (
                                 SELECT a0.id_q
-                                FROM ANSWERS a0
+                                FROM answers a0
                               )
                 ";
         if (isset($id_category)) {
@@ -141,6 +142,7 @@ class Question
 
         
         if (!$st->execute()){
+var_dump($st->queryString);
             die('Не удалось выполнить запрос на получение списка вопросов с ответами');
         }
         

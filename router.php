@@ -83,7 +83,7 @@ if($signal === "show_login_form"){
     if (!$user->addRole('Admin')){
         die('Не удалось добавить роль пользователю!');
     }
-    echo '<br><a href=router.php?params=show_admin_desktop:users>Вернуться к спску пользователей</a>';
+    echo '<br><a href=router.php?params=show_admin_desktop:users>Вернуться к списку пользователей</a>';
 
 // Вызов формы создания пользователя
 }elseif ($signal === "show_user_create_form"){
@@ -102,7 +102,7 @@ if($signal === "show_login_form"){
     $user->setId($_POST['user_id']);
     
     if ($user->delete()){
-        $clientView = new ClientView("admin_desktop", "users");
+        $clientView = new ClientView("admin_desktop", ["users"]);
         $clientView->show();
     }
 }
@@ -172,7 +172,7 @@ elseif ($signal === "category_create_action"){
     $category->setId($_POST['category_id']);
     
     if ($category->delete()){
-        $clientView = new ClientView("admin_desktop", "qq_categories");
+        $clientView = new ClientView("admin_desktop", ["qq_categories"]);
         $clientView->show();
     }
 

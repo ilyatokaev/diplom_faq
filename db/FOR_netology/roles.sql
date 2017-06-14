@@ -1,5 +1,3 @@
-USE diplom;
-
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id роли',
   `code` varchar(20) NOT NULL COMMENT 'код роли',
@@ -9,4 +7,4 @@ CREATE TABLE `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='Роли';
 
 
-insert into `diplom`.`roles`(`id`,`code`,`description`) values (1,'Admin','Администратор');
+insert into `roles`(`id`,`code`,`description`) values (1,'Admin','Администратор');

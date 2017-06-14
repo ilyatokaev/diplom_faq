@@ -18,7 +18,13 @@ require_once './templates/category_del_form.php';
 require_once './templates/qq_list.php';
 require_once './templates/question_create_form.php';
 
-$loader = new Twig_Loader_Filesystem('./templates');
+/*$loader = new Twig_Loader_Filesystem('./templates');
 
 $twig = new Twig_Environment($loader, array('cache'=>'./tmp/cache'
+                                            , 'auto_reload'=>'true'));*/
+
+
+$loader = new Twig_Loader_Filesystem('templates');
+
+$twig = new Twig_Environment($loader, array('cache'=>'tmp/cache'
                                             , 'auto_reload'=>'true'));

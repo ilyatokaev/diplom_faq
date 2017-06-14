@@ -30,9 +30,14 @@ class User
         }
 
         if (!$st->fetch()){
-            $sql = "INSERT INTO users (login, description, password_hash) VALUES ('admin', 'Админ поумолчанию', :password_hash)";
+            //$sql = "INSERT INTO users (login, description, password_hash) VALUES ('admin', 'Админ поумолчанию', :password_hash)";
+            $this->create("admin", "admin", "Админ поумолчанию");
+            
+            if (!$this->addRole('Admin')){
+                die('Не удалось добавить роль пользователю!');
+            }
 
-            if (!$st = $this->db->prepare($sql)){
+            /*if (!$st = $this->db->prepare($sql)){
                 die("Не удалось подготовить запрос на создание админа поумолчанию!");
             }
 
@@ -40,7 +45,7 @@ class User
             
             if (!$st->execute()){
                 die("Не удалось выполнить запрос на создание админа поумолчанию!");
-            }
+            }*/
         }
 
     }
@@ -268,7 +273,7 @@ var_dump($st->queryString);
      */
     public function login($login, $password)
     {
-            $sql = "SELECT 1 FROM users WHERE login = :login AND password_hash = :password_hash";
+            $sql = "SELECT id, login, description FROM users WHERE login = :login AND password_hash = :password_hash";
 
             if (!$st = $this->db->prepare($sql)){
                 die("Не удалось подготовить запрос на поиск пользователя и пароля!");
@@ -284,7 +289,7 @@ var_dump($st->queryString);
             if (!$row = $st->fetch(PDO::FETCH_ASSOC)){
                 return FALSE;
             }
-            
+
             $this->id = $row['id'];
             $this->login = $row['login'];
             $this->description = $row['description'];
@@ -426,7 +431,7 @@ var_dump($st->queryString);
             }
             
             $st->bindParam(":id", $this->getId(), PDO::PARAM_INT);
-            $st->bindParam(":password_hash", $this->password_hash($login, $password), PDO::PARAM_STR);
+            $st->bindParam(":password_hash", $this->password_hash($this->login, $password), PDO::PARAM_STR);
             
             return $st->execute();
 

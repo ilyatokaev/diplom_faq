@@ -1,7 +1,7 @@
 USE diplom;
 
 CREATE TABLE `qq_statuses` (
-  `id` int(11) NOT NULL COMMENT 'id статуса',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id статуса',
   `code` varchar(20) NOT NULL COMMENT 'код статуса',
   `description` varchar(1000) DEFAULT NULL COMMENT 'описание статуса',
   PRIMARY KEY (`id`),
@@ -9,5 +9,3 @@ CREATE TABLE `qq_statuses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Статусы вопросов';
 
 
-insert into `diplom`.`qq_statuses`(`id`,`code`,`description`) values (2,'PUBLIC','Разрешена публикация');
-insert into `diplom`.`qq_statuses`(`id`,`code`,`description`) values (3,'HIDDEN','Вопрос скрыт');

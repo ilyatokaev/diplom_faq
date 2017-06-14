@@ -133,7 +133,7 @@ class admin_desktop
         foreach ($result['table']['body'] as $key => $row){
                 $result['table']['body'][$key]['actions'] = [
                                                               [
-                                                                'title' => ($row['data']['id'] === 2) ? "Скрыть" : "Опубликовать",
+                                                                'title' => ($row['data']['id'] === 2) ? "Опубликовать" : "Скрыть",
                                                                 'href' => "router.php?params=show_question_status_invers_form:" . $row['data']['id']
                                                               ],
                                                               [
@@ -149,6 +149,7 @@ class admin_desktop
                                                                 'href' => "router.php?params=show_admin_desktop:answers:" . $row['data']['id']
                                                               ]
                                                             ];
+
 
             foreach ($row['data'] as $fieldKey => $value){
                 $result['table']['body'][$key]['data'][$fieldKey] =  htmlspecialchars($value);
