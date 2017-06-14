@@ -181,6 +181,8 @@ elseif ($signal === "category_create_action"){
     $clientView = new ClientView("question_create_form");
     $clientView->show();
 
+
+//Создание вопроса    
 }elseif ($signal === "question_create_action"){
     $question = new Question();
     $question->setText($_POST['q_text']);
@@ -193,7 +195,7 @@ elseif ($signal === "category_create_action"){
         
     }
 
-           
+//Вызов пользовательской (не админ) формы с вопросами
 }elseif ($signal === "show_qq_list"){
     $clientView = new ClientView("qq_list");
     $clientView->show();

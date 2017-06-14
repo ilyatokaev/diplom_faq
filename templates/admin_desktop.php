@@ -36,7 +36,12 @@ class admin_desktop
             }elseif ($mode === "qq"){
                 $currentCategoryId = $params[2];
                 $result = $this->genArrayQQ($currentCategoryId);
+            
+            }elseif ($mode === "answers"){
+                $currentQuestionId = $params[2];
+                $result = $this->genArrayAnswer($currentQuestionId);
             }
+
         }
         return $result;
     }
@@ -160,5 +165,45 @@ class admin_desktop
         
         
     }
+
+    private function genArrayAnswer($questionId)
+    {
+        
+        $answer = new Answer();
+        $answer->setQuestionId($questionId);
+        
+        $question = new Question();
+        $question->setId($questionId);
+                
+        $result = [
+            'title' => "Ответы на вопрос - " . $question->getText(),
+            'sidebar' => [
+            ],
+            'table' => $answer->getList(),
+        ];
+
+        foreach ($result['table']['body'] as $key => $row){
+                $result['table']['body'][$key]['actions'] = [
+                                                              [
+                                                                'title' => "Редактировать вопрос",
+                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Удалить",
+                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                              ]
+                                                            ];
+
+
+            foreach ($row['data'] as $fieldKey => $value){
+                $result['table']['body'][$key]['data'][$fieldKey] =  htmlspecialchars($value);
+            }
+        }
+        
+        return $result;
+        
+        
+    }
+
     
 }

@@ -9,6 +9,7 @@ require_once 'vendor/autoload.php';
 require_once './model/User.php';
 require_once './model/Category.php';
 require_once './model/Question.php';
+require_once './model/Answer.php';
 require_once './Classes/ClientView.php';
 require_once './Classes/Cfg.php';
 require_once './templates/admin_desktop.php';

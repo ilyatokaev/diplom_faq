@@ -14,9 +14,13 @@
 class Answer
 {
     
-    static function getList($idQ)
+    
+    private $questionId;
+    
+    public function getList()
     {
-        $sql = "SELECT a.create_date
+        $sql = "SELECT a.id 
+                    , a.create_date
                     , u.login
                     , a.a_text
                 FROM answers a
@@ -25,17 +29,39 @@ class Answer
                 WHERE a.id_q = :id_q
                 ";
         
+        $result['header'] = ["id", "Дата создания", "Автор", "Текст ответа"];
+        
         if (!$st = Cfg::getDB()->prepare($sql)){
             die('Не удалось подготовить запрос на получение списка ответов!');
         }
+        
+        $st->bindParam('id_q', $this->getQuestionId(), PDO::PARAM_INT);
+        
         
         if (!$st->execute()) {
 
             die('Не удалось выполнить запрос на получение списка ответов!');
         }
         
-        $result = $st->fetchAll(PDO::FETCH_ASSOC);
+        $result['body'] = [];
+        while ($row = $st->fetch(PDO::FETCH_ASSOC)){
+            $result['body'][] = ['data' => $row];
+        }
+
             
         return $result;
     }
+    
+    
+    public function setQuestionId($questionId)
+    {
+        $this->questionId = $questionId;
+    }
+    
+
+    public function getQuestionId()
+    {
+        return $this->questionId;
+    }
+
 }

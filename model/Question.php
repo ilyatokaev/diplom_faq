@@ -17,6 +17,25 @@ class Question
     public function setId($id)
     {
         $this->id = $id;
+        
+        $sql = "SELECT q_text FROM qq WHERE id = :id";
+        
+        if (!$st = Cfg::getDB()->prepare($sql)){
+            die('Не удалось подготовить запрос на получения Ответа!');
+        }
+        
+        $st->bindParam(':id', $this->id, PDO::PARAM_INT);
+
+        if (!$st->execute()){
+            die('Не удалось выполнить запрос на получения Ответа!');
+        }
+        
+        if (!$row = $st->fetch(PDO::FETCH_ASSOC)){
+            die('Не удалось найти вопрос по Id!');
+        }
+        
+        $this->setText($row['q_text']);
+
     }
     
     public function getId()
