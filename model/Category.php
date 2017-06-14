@@ -72,7 +72,7 @@ class Category
                                                            )
                                         GROUP BY q0.id_category
                                     ) na
-                        ON cat.id = pub.id_category
+                        ON cat.id = na.id_category
                     LEFT OUTER JOIN (
                                         SELECT q0.id_category, count(*) qq_quantity
                                         FROM qq q0

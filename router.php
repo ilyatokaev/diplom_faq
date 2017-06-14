@@ -96,13 +96,13 @@ if($signal === "show_login_form"){
     $clientView = new ClientView("user_del_form", $params[1]);
     $clientView->show();
 
-// Вызов формы удаления пользователя
+// Удаление пользователя
 }elseif ($signal === "user_del_action"){
     $user = new User;
     $user->setId($_POST['user_id']);
     
     if ($user->delete()){
-        $clientView = new ClientView("admin_desktop", ["users"]);
+        $clientView = new ClientView("admin_desktop", [NULL, "users"]);
         $clientView->show();
     }
 }
@@ -166,13 +166,13 @@ elseif ($signal === "category_create_action"){
     $clientView = new ClientView("category_del_form", $params[1]);
     $clientView->show();
 
-// Вызов формы удаления темы
+// Удаление темы
 }elseif ($signal === "category_del_action"){
     $category = new Category();
     $category->setId($_POST['category_id']);
     
     if ($category->delete()){
-        $clientView = new ClientView("admin_desktop", ["qq_categories"]);
+        $clientView = new ClientView("admin_desktop", [NULL, "qq_categories"]);
         $clientView->show();
     }
 
@@ -199,4 +199,27 @@ elseif ($signal === "category_create_action"){
 }elseif ($signal === "show_qq_list"){
     $clientView = new ClientView("qq_list");
     $clientView->show();
+
+    
+// Вызов формы созданиея ответа
+}elseif ($signal === "show_answer_create_form"){
+    $clientView = new ClientView("answer_create_form", $params[1]);
+    $clientView->show();
+
+
+//Создание ответа
+}elseif ($signal === "answer_create_action"){
+    
+    $answer = new Answer();
+    $answer->setQuestionId($_POST['id_q']);
+    $answer->setText($_POST['a_text']);
+    $answer->setIdAuthor($_POST['id_author']);
+
+    
+    if ($answer->create()){
+  
+        $clientView = new ClientView("admin_desktop", [NULL, "answers", $answer->getQuestionId()]);
+        $clientView->show();
+    }
+        
 }

@@ -31,6 +31,7 @@ class Question
         }
         
         if (!$row = $st->fetch(PDO::FETCH_ASSOC)){
+
             die('Не удалось найти вопрос по Id!');
         }
         
@@ -134,10 +135,11 @@ class Question
     
     static function qqListWithAnswers($id_category = NULL)
     {
-        $sql = "SELECT q.create_date
+        $sql = "SELECT q.id
+                    , q.create_date date
                     , q.author
-                    , c.code
-                    , q.q_text
+                    , c.code category
+                    , q.q_text text
                 FROM qq q
                     INNER JOIN categories c
                         ON q.id_category = c.id
@@ -161,18 +163,21 @@ class Question
 
         
         if (!$st->execute()){
-var_dump($st->queryString);
+
             die('Не удалось выполнить запрос на получение списка вопросов с ответами');
         }
         
         
-        $result = [];
-        while ($row = $st->fetch(PDO::FETCH_ASSOC)){
+        //$result = [];
+        $result = $st->fetchAll(PDO::FETCH_ASSOC);
+        /*while ($row = $st->fetch(PDO::FETCH_ASSOC)){
             $result[] = $row;
-        }
+        }*/
         
         foreach ($result as $key => $row){
-            $result[$key]['answers'] = Answer::getList($result[$key]['id']);
+            $answer = new Answer();
+            $answer->setQuestionId($result[$key]['id']);
+            $result[$key]['answers'] = $answer->getSimpleList();
         }
         
         return $result;

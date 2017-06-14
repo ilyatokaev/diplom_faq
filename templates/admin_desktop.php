@@ -39,7 +39,7 @@ class admin_desktop
             
             }elseif ($mode === "answers"){
                 $currentQuestionId = $params[2];
-                $result = $this->genArrayAnswer($currentQuestionId);
+                $result = $this->genArrayAnswers($currentQuestionId);
             }
 
         }
@@ -166,7 +166,7 @@ class admin_desktop
         
     }
 
-    private function genArrayAnswer($questionId)
+    private function genArrayAnswers($questionId)
     {
         
         $answer = new Answer();
@@ -178,14 +178,19 @@ class admin_desktop
         $result = [
             'title' => "Ответы на вопрос - " . $question->getText(),
             'sidebar' => [
+                            [
+                                'itemText' => "Создать",
+                                'itemHref' => "router.php?params=show_answer_create_form:" . $questionId
+                            ]
             ],
+
             'table' => $answer->getList(),
         ];
 
         foreach ($result['table']['body'] as $key => $row){
                 $result['table']['body'][$key]['actions'] = [
                                                               [
-                                                                'title' => "Редактировать вопрос",
+                                                                'title' => "Редактировать ответ",
                                                                 'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
                                                               ],
                                                               [
