@@ -138,8 +138,8 @@ class admin_desktop
         foreach ($result['table']['body'] as $key => $row){
                 $result['table']['body'][$key]['actions'] = [
                                                               [
-                                                                'title' => ($row['data']['id'] === 2) ? "Опубликовать" : "Скрыть",
-                                                                'href' => "router.php?params=show_question_status_invers_form:" . $row['data']['id']
+                                                                'title' => ($row['data']['code'] === "HIDDEN") ? "Опубликовать" : "Скрыть",
+                                                                'href' => "router.php?params=show_question_status_invers_action:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Удалить",

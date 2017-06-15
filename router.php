@@ -222,4 +222,33 @@ elseif ($signal === "category_create_action"){
         $clientView->show();
     }
         
+
+
+//Инвертирование статуса вопроса
+}elseif ($signal === "show_question_status_invers_action"){
+    
+    $id_q = $params[1];
+    
+    $question = new Question();
+    $question->setId($id_q);
+    
+    $statusId = $question->getStatusId();
+    
+    
+    if ( (int)$statusId === 2){
+        $result = $question->setStatusHidden();
+    }elseif ((int)$statusId  === 3){
+        $result = $question->setStatusPublic();
+    } else {
+
+        die('Неизвестный исходный статус вопроса!');
+    }
+    
+    if ($result){
+        $clientView = new ClientView("admin_desktop", [NULL, "qq", $question->getCategoryId()]);
+        $clientView->show();
+    }
+    
+    
+        
 }

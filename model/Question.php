@@ -13,12 +13,14 @@ class Question
     private $text;
     private $author;
     private $email;
+    private $statusId;
     
     public function setId($id)
     {
         $this->id = $id;
+var_dump($this->id);
         
-        $sql = "SELECT q_text FROM qq WHERE id = :id";
+        $sql = "SELECT q_text, id_status, id_category FROM qq WHERE id = :id";
         
         if (!$st = Cfg::getDB()->prepare($sql)){
             die('Не удалось подготовить запрос на получения Ответа!');
@@ -36,6 +38,8 @@ class Question
         }
         
         $this->setText($row['q_text']);
+        $this->setStatusId($row['id_status']);
+        $this->setCategoryId($row['id_category']);
 
     }
     
@@ -43,8 +47,18 @@ class Question
     {
         return $this->id;
     }
-
     
+    private function setStatusId($statusId)
+    {
+        $this->statusId = $statusId;
+    }
+
+    public function getStatusId()
+    {
+        return $this->statusId;
+    }
+
+
     public function setCategoryId($categoryId)
     {
         $this->categoryId = $categoryId;
@@ -98,7 +112,7 @@ class Question
                     , q.author
                     , q.email
                     , IFNULL(a.answers_quantity, 'Ожидает ответа')
-                    , s.description
+                    , s.code
                     
                 FROM qq q
                     LEFT OUTER JOIN (
@@ -146,7 +160,8 @@ class Question
                 WHERE q.id IN (
                                 SELECT a0.id_q
                                 FROM answers a0
-                              )
+                              ) 
+                      AND q.id_status <> 3
                 ";
         if (isset($id_category)) {
             $sql = $sql . " AND q.id_category = :id_category";
@@ -210,5 +225,51 @@ class Question
         return $db->lastInsertId();
         
     }
+    
+    public function setStatusPublic()
+    {
+        
+        $sql = "UPDATE qq SET id_status = 2 WHERE id = :id";
+        
+        $db = Cfg::getDB();
+        
+        if (!$st = $db->prepare($sql)){
+            die('Не удалось подготовить запрос на публикацию вопроса!');
+        }
+        
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        
+        if (!$st->execute()) {
+            die('Не удалось выполнить запрос на публикацию вопроса!');
+        }
+        
+        return TRUE;
+
+        
+    }
+
+
+    public function setStatusHidden()
+    {
+        
+        $sql = "UPDATE qq SET id_status = 3 WHERE id = :id";
+        
+        $db = Cfg::getDB();
+        
+        if (!$st = $db->prepare($sql)){
+            die('Не удалось подготовить запрос на скрытие вопроса!');
+        }
+        
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        
+        if (!$st->execute()) {
+            die('Не удалось выполнить запрос на скрытие вопроса!');
+        }
+        
+        return TRUE;
+
+        
+    }
+
     
 }
