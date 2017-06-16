@@ -18,7 +18,6 @@ class Question
     public function setId($id)
     {
         $this->id = $id;
-var_dump($this->id);
         
         $sql = "SELECT q_text, id_status, id_category FROM qq WHERE id = :id";
         

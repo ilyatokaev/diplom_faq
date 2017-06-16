@@ -348,7 +348,7 @@ var_dump($st->queryString);
         return $roles;
         
     }
-
+    
     
     /*******************
      * getRolesString($id)

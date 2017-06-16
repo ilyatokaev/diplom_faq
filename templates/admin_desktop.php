@@ -143,11 +143,11 @@ class admin_desktop
                                                               ],
                                                               [
                                                                 'title' => "Удалить",
-                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=show_question_del_form:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Редактировать вопрос",
-                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=show_question_editl_form:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Ответы",
@@ -191,11 +191,11 @@ class admin_desktop
                 $result['table']['body'][$key]['actions'] = [
                                                               [
                                                                 'title' => "Редактировать ответ",
-                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=show_answer_edit_form:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Удалить",
-                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=show_answer_del_form:" . $row['data']['id']
                                                               ]
                                                             ];
 
