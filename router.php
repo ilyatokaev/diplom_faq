@@ -17,7 +17,19 @@ if ($method === "POST"){
     $signal = $params[0];
 }
 
-   
+
+if (!strpos(Cfg::getCurrentRoles(), "Admin")){
+    if ($signal != 'show_question_create_form' 
+            & $signal != 'show_login_form' 
+            & $signal != 'question_create_action'
+            & $signal != 'show_qq_list'
+            & $signal != 'login_action'
+            )
+    {
+        die('!!!Доступ запрещен!!!');
+    }
+}
+
 $controller = new $signal($params);
 $controller->action();
 
