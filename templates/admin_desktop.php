@@ -36,7 +36,11 @@ class admin_desktop
             }elseif ($mode === "qq"){
                 $currentCategoryId = $params[2];
                 $result = $this->genArrayQQ($currentCategoryId);
-            
+
+            }elseif ($mode === "qq_without_answer"){
+                $currentCategoryId = $params[2];
+                $result = $this->genArrayQQWitoutAnswer($currentCategoryId);
+
             }elseif ($mode === "answers"){
                 $currentQuestionId = $params[2];
                 $result = $this->genArrayAnswers($currentQuestionId);
@@ -166,6 +170,44 @@ class admin_desktop
         
     }
 
+
+    private function genArrayQQWitoutAnswer()
+    {
+
+        $question = new Question();
+                
+        $result = [
+            'title' => "Вопросы без ответов",
+            'sidebar' => [
+            ],
+            'table' => $question->listWithoutAnswer(),
+        ];
+
+        foreach ($result['table']['body'] as $key => $row){
+                $result['table']['body'][$key]['actions'] = [
+                                                              [
+                                                                'title' => "Удалить",
+                                                                'href' => "router.php?params=show_question_without_answer_del_form:" . $row['data']['id']
+                                                              ],
+                                                              [
+                                                                'title' => "Редактировать вопрос",
+                                                                'href' => "router.php?params=show_question_without_answer_edit_form:" . $row['data']['id']
+                                                              ]
+                                                            ];
+
+
+            foreach ($row['data'] as $fieldKey => $value){
+                $result['table']['body'][$key]['data'][$fieldKey] =  htmlspecialchars($value);
+            }
+        }
+        
+        
+        return $result;
+        
+        
+    }
+
+    
     private function genArrayAnswers($questionId)
     {
         

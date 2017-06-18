@@ -148,6 +148,45 @@ class Question
 
     }
     
+public function listWithoutAnswer()
+    {
+    
+        $sql = "SELECT q.id
+                    , q.create_date
+                    , c.code category
+                    , q.q_text
+                    , q.author
+                    , q.email
+                    , s.code status
+                FROM qq q
+                    INNER JOIN qq_statuses s ON q.id_status = s.id
+                    INNER JOIN categories c ON q.id_category = c.id
+                WHERE q.id NOT IN (
+                                    SELECT a0.id_q
+                                    FROM answers a0
+                                  )
+                ";
+        
+        $result['header'] = ["id", "Дата создания", "Тема", "Вопрос", "Автор", "E-mail", "Статус"];
+        
+        if (!$st = Cfg::getDB()->prepare($sql)){
+            die('Не удалось подготовить запрос на получение списка вопросов без ответов!');
+        }
+
+        if (!$st->execute()) {
+
+            die('Не удалось выполнить запрос на получение списка вопросов без ответов!');
+        }
+        
+        $result['body'] = [];
+        while ($row = $st->fetch(PDO::FETCH_ASSOC)){
+            $result['body'][] = ['data' => $row];
+        }
+            
+        return $result;
+
+    }
+    
     static function qqListWithAnswers($id_category = NULL)
     {
         $sql = "SELECT q.id
