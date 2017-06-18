@@ -9,7 +9,7 @@ class Category_del_form
 {
     function GenArray($category_id)
     {
-var_dump($category_id) ;
+
         $category = new Category();
         
         $category->setId($category_id);

@@ -5,7 +5,7 @@
  *
  * @author Илья
  */
-class Question_create_action
+class Question_update_action
 {
     private $params;
     
@@ -28,16 +28,27 @@ class Question_create_action
     public function action()
     {
 
+        $questionId = $this->getParams()['id_q'];
+        
+
+
         $question = new Question();
+        $question->setId($questionId);
+
+        $oldCategoryId = $question->getCategoryId();
+        
+        $question->setCategoryId($this->getParams()['id_category']);
         $question->setText($this->getParams()['q_text']);
         $question->setAuthor($this->getParams()['author']);
         $question->setEmail($this->getParams()['email']);
-        $question->setCategoryId($this->getParams()['id_category']);
 
-        if ($question->create()){
-            echo 'Вопрос создан и будетопублекован после модерации и появления ответов.';
-            echo '<br><a href=router.php?params=show_qq_list>Вернуться к спску вопросов</a>';
+
+        if ($question->update()){
+            echo 'Вопрос изменен.';
+            echo '<br><a href=router.php?params=show_admin_desktop:qq:' . $oldCategoryId . '>Вернуться к спску вопросов</a>';
 
         }
+        
+        return true;
     }
 }

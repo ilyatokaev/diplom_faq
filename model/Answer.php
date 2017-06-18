@@ -15,10 +15,50 @@ class Answer
 {
     
     
+    private $id;
     private $questionId;
     private $text;
     private $idAuthor;
     
+    public function setId($id)
+    {
+        $this->id = $id;
+        
+        $sql = "SELECT id_author, id_q, a_text
+                FROM answers
+                WHERE id = :id
+                ";
+        
+      
+        if (!$st = Cfg::getDB()->prepare($sql)){
+            die('Не удалось подготовить запрос на получение ответа!');
+        }
+        
+        $questionId = $this->getQuestionId();
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        
+        
+        if (!$st->execute()) {
+
+            die('Не удалось выполнить запрос на получение ответа!');
+        }
+        
+        if (!$row = $st->fetch(PDO::FETCH_ASSOC)){
+            die('Не найден ответ с ID=' . $this->getId());
+        }
+        
+        $this->setIdAuthor($row['id_author']);
+        $this->setQuestionId($row['id_q']);
+        $this->setText($row['a_text']);
+        
+    }
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
     public function getList()
     {
         $sql = "SELECT a.id 
@@ -151,5 +191,59 @@ var_dump($_POST['id_q'],date(DATE_ATOM),$_POST['a_text'],$_POST['id_author'], $s
         return $db->lastInsertId();
 
     }
+
+    
+    public function delete()
+    {
+        
+        $sql = "DELETE
+                FROM answers
+                WHERE id = :id
+                ";
+        
+      
+        if (!$st = Cfg::getDB()->prepare($sql)){
+            die('Не удалось подготовить запрос на удаление ответа!');
+        }
+        
+        $questionId = $this->getQuestionId();
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        
+        
+        if (!$st->execute()) {
+
+            die('Не удалось выполнить запрос на удаление ответа!');
+        }
+        
+        return true;
+        
+    }
+    
+    public function update()
+    {
+        
+        $sql = "UPDATE answers SET a_text = :a_text
+                WHERE id = :id
+                ";
+        
+      
+        if (!$st = Cfg::getDB()->prepare($sql)){
+            die('Не удалось подготовить запрос на изменение ответа!');
+        }
+        
+        $questionId = $this->getQuestionId();
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        $st->bindParam(':a_text', $this->getText(), PDO::PARAM_STR);
+        
+        
+        if (!$st->execute()) {
+var_dump($this->getId(), $st->queryString);
+            die('Не удалось выполнить запрос на изменение ответа!');
+        }
+        
+        return true;
+        
+    }
+
 
 }

@@ -19,26 +19,28 @@ class Question
     {
         $this->id = $id;
         
-        $sql = "SELECT q_text, id_status, id_category FROM qq WHERE id = :id";
+        $sql = "SELECT q_text, id_status, id_category, author, email FROM qq WHERE id = :id";
         
         if (!$st = Cfg::getDB()->prepare($sql)){
-            die('Не удалось подготовить запрос на получения Ответа!');
+            die('Не удалось подготовить запрос на получения Вопроса!');
         }
         
         $st->bindParam(':id', $this->id, PDO::PARAM_INT);
 
         if (!$st->execute()){
-            die('Не удалось выполнить запрос на получения Ответа!');
+            die('Не удалось выполнить запрос на получения Вопроса!');
         }
         
         if (!$row = $st->fetch(PDO::FETCH_ASSOC)){
 
-            die('Не удалось найти вопрос по Id!');
+            die(__CLASS__ . ' Не удалось найти вопрос по Id!');
         }
         
         $this->setText($row['q_text']);
         $this->setStatusId($row['id_status']);
         $this->setCategoryId($row['id_category']);
+        $this->setAuthor($row['author']);
+        $this->setEmail($row['email']);
 
     }
     
@@ -210,11 +212,17 @@ class Question
             die('Не удалось подготовить запрос на создание вопроса!');
         }
 
-        $st->bindParam(':id_category', $_POST['id_category'], PDO::PARAM_INT);
+        /*$st->bindParam(':id_category', $_POST['id_category'], PDO::PARAM_INT);
         $st->bindParam(':create_date', date(DATE_ATOM), PDO::PARAM_STR); 
         $st->bindParam(':q_text', $_POST['q_text'], PDO::PARAM_STR);
         $st->bindParam(':author', $_POST['author'], PDO::PARAM_STR);
-        $st->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+        $st->bindParam(':email', $_POST['email'], PDO::PARAM_STR);*/
+
+        $st->bindParam(':id_category', $this->getCategoryId(), PDO::PARAM_INT);
+        $st->bindParam(':create_date', date(DATE_ATOM), PDO::PARAM_STR); 
+        $st->bindParam(':q_text', $this->getText(), PDO::PARAM_STR);
+        $st->bindParam(':author', $this->author, PDO::PARAM_STR);
+        $st->bindParam(':email', $this->getEmail(), PDO::PARAM_STR);
 
         
         if (!$st->execute()) {
@@ -269,6 +277,66 @@ class Question
 
         
     }
+    
+    public function delete()
+    {
+        
+        $sql = "DELETE FROM qq WHERE id = :id";
+        
+        $db = Cfg::getDB();
+        
+        if (!$st = $db->prepare($sql)){
+            die('Не удалось подготовить запрос на удаление вопроса!');
+        }
+        
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        
+        if (!$st->execute()) {
+            die('Не удалось выполнить запрос на удаление вопроса! Возможно причина в том, что в вопросе содержатся ответы!');
+        }
+        
+        return TRUE;
 
+        
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE qq  SET id_category = :id_category
+                            , create_date = :create_date
+                            , q_text = :q_text
+                            , author = :author
+                            , email = :email
+                WHERE id = :id            
+                ";
+        
+        $db = Cfg::getDB();
+        
+        if (!$st = $db->prepare($sql)){
+            die('Не удалось подготовить запрос на создание вопроса!');
+        }
+
+        /*$st->bindParam(':id_category', $_POST['id_category'], PDO::PARAM_INT);
+        $st->bindParam(':create_date', date(DATE_ATOM), PDO::PARAM_STR); 
+        $st->bindParam(':q_text', $_POST['q_text'], PDO::PARAM_STR);
+        $st->bindParam(':author', $_POST['author'], PDO::PARAM_STR);
+        $st->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+        $st->bindParam(':id', $_POST['id_q'], PDO::PARAM_INT);*/
+        
+        $st->bindParam(':id_category', $this->getCategoryId(), PDO::PARAM_INT);
+        $st->bindParam(':create_date', date(DATE_ATOM), PDO::PARAM_STR); 
+        $st->bindParam(':q_text', $this->getText(), PDO::PARAM_STR);
+        $st->bindParam(':author', $this->getAuthor(), PDO::PARAM_STR);
+        $st->bindParam(':email', $this->getEmail(), PDO::PARAM_STR);
+        $st->bindParam(':id', $this->getId(), PDO::PARAM_INT);        
+
+        
+        if (!$st->execute()) {
+            die('Не удалось выполнить запрос на создание вопроса!');
+        }
+        
+        return true;
+        
+    }
     
 }

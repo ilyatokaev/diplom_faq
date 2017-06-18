@@ -147,7 +147,7 @@ class admin_desktop
                                                               ],
                                                               [
                                                                 'title' => "Редактировать вопрос",
-                                                                'href' => "router.php?params=show_question_editl_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=show_question_edit_form:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Ответы",
