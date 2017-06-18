@@ -38,8 +38,7 @@ class admin_desktop
                 $result = $this->genArrayQQ($currentCategoryId);
 
             }elseif ($mode === "qq_without_answer"){
-                $currentCategoryId = $params[2];
-                $result = $this->genArrayQQWitoutAnswer($currentCategoryId);
+                $result = $this->genArrayQQWitoutAnswer();
 
             }elseif ($mode === "answers"){
                 $currentQuestionId = $params[2];
