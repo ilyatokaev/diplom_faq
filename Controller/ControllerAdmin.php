@@ -1,37 +1,34 @@
 <?php
-//require_once 'start_init.php';
+
 /**
- * Show_login_form Вызов формы авторизации
+ * Description of ControllerUser
  *
  * @author Илья
  */
-class Show_question_del_form
+class ControllerAdmin
 {
+    
     private $params;
     
     public function __construct($params)
     {
+        
         $this->setParams($params);
-
     }
-
+    
     private function setParams($params)
     {
         $this->params = $params;
     }
-
+    
     private function getParams()
     {
         return $this->params;
     }
-
-    public function action()
+    
+    public function showDesktop()
     {
-
-        $questionId = $this->getParams()[1];
-        
-        $clientView = new ClientView("question_del_form", $questionId);
+        $clientView = new ClientView("admin_desktop", $this->getParams());
         $clientView->show();
-
     }
 }

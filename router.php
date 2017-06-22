@@ -6,7 +6,6 @@ require_once './common_functions.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-
 if ($method === "POST"){
     $signal = $_POST['signal'];
     $params = $_POST;
@@ -17,20 +16,24 @@ if ($method === "POST"){
     $signal = $params[0];
 }
 
+$className = explode("_", $signal, 2);
+$methodName = $className[1];
+$className = 'Controller' . $className[0];
+
 
 if (!strpos(Cfg::getCurrentRoles(), "Admin")){
-    if ($signal != 'show_question_create_form' 
-            & $signal != 'show_login_form' 
-            & $signal != 'question_create_action'
-            & $signal != 'show_qq_list'
-            & $signal != 'login_action'
+    if ($signal != 'Question_showCreateForm' 
+            & $signal != 'User_showLoginForm' 
+            & $signal != 'Question_create'
+            & $signal != 'Question_userList'
+            & $signal != 'User_login'
             )
     {
         die('!!!Доступ запрещен!!!');
     }
 }
 
-$controller = new $signal($params);
-$controller->action();
 
+$controller = new $className($params);
+$controller->$methodName();
 

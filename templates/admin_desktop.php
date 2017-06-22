@@ -58,7 +58,7 @@ class admin_desktop
             'sidebar' => [
                             [
                                 'itemText' => "Создать",
-                                'itemHref' => "router.php?params=show_user_create_form"
+                                'itemHref' => "router.php?params=User_showCreateForm"
                             ]
             ],
             'table' => $user->fullList(),
@@ -68,11 +68,11 @@ class admin_desktop
                 $result['table']['body'][$key]['actions'] = [
                                                               [
                                                                 'title' => "Изменить пароль",
-                                                                'href' => "router.php?params=show_user_password_change_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=User_showPasswordChangeForm:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Удалить пользователя",
-                                                                'href' => "router.php?params=show_user_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=User_showDelForm:" . $row['data']['id']
                                                               ]
                                                             ];
 
@@ -93,7 +93,7 @@ class admin_desktop
             'sidebar' => [
                             [
                                 'itemText' => "Создать",
-                                'itemHref' => "router.php?params=show_category_create_form"
+                                'itemHref' => "router.php?params=Category_showCreateForm"
                             ]
             ],
             'table' => $category->fullList(),
@@ -103,11 +103,11 @@ class admin_desktop
                 $result['table']['body'][$key]['actions'] = [
                                                               [
                                                                 'title' => "Вопросоы",
-                                                                'href' => "router.php?params=show_admin_desktop:qq:" . $row['data']['id']
+                                                                'href' => "router.php?params=Admin_showDesktop:qq:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Удалить",
-                                                                'href' => "router.php?params=show_category_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Category_showDelForm:" . $row['data']['id']
                                                               ]
                                                             ];
 
@@ -142,19 +142,19 @@ class admin_desktop
                 $result['table']['body'][$key]['actions'] = [
                                                               [
                                                                 'title' => ($row['data']['code'] === "HIDDEN") ? "Опубликовать" : "Скрыть",
-                                                                'href' => "router.php?params=show_question_status_invers_action:" . $row['data']['id']
+                                                                'href' => "router.php?params=Question_statusInvers:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Удалить",
-                                                                'href' => "router.php?params=show_question_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Question_showDelForm:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Редактировать вопрос",
-                                                                'href' => "router.php?params=show_question_edit_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Question_showEditForm:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Ответы",
-                                                                'href' => "router.php?params=show_admin_desktop:answers:" . $row['data']['id']
+                                                                'href' => "router.php?params=Admin_showDesktop:answers:" . $row['data']['id']
                                                               ]
                                                             ];
 
@@ -186,11 +186,11 @@ class admin_desktop
                 $result['table']['body'][$key]['actions'] = [
                                                               [
                                                                 'title' => "Удалить",
-                                                                'href' => "router.php?params=show_question_without_answer_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Question_showWithoutAnswerDelForm:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Редактировать вопрос",
-                                                                'href' => "router.php?params=show_question_without_answer_edit_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Question_showWithoutAnswerEditForm:" . $row['data']['id']
                                                               ]
                                                             ];
 
@@ -221,7 +221,7 @@ class admin_desktop
             'sidebar' => [
                             [
                                 'itemText' => "Создать",
-                                'itemHref' => "router.php?params=show_answer_create_form:" . $questionId
+                                'itemHref' => "router.php?params=Answer_showCreateForm:" . $questionId
                             ]
             ],
 
@@ -232,11 +232,11 @@ class admin_desktop
                 $result['table']['body'][$key]['actions'] = [
                                                               [
                                                                 'title' => "Редактировать ответ",
-                                                                'href' => "router.php?params=show_answer_edit_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Answer_showEditForm:" . $row['data']['id']
                                                               ],
                                                               [
                                                                 'title' => "Удалить",
-                                                                'href' => "router.php?params=show_answer_del_form:" . $row['data']['id']
+                                                                'href' => "router.php?params=Answer_showDelForm:" . $row['data']['id']
                                                               ]
                                                             ];
 
